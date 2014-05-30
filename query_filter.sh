@@ -73,6 +73,37 @@ curl $ES_HOST':9200/get-together/_search' -d '{
 echo
 
 echo "###############"
+echo "Query Filtered Group match_all with boolean AND filter on tag and description"
+echo "###############"
+curl $ES_HOST':9200/get-together/_search' -d '{
+	"query": {
+		"filtered": {
+			"query": {
+				"match_all": {}
+			},
+			"filter": {
+				"bool": {
+					"must": [
+						{
+							"term": {
+								"tags": "clojure"
+							}
+						},
+						{
+							"term": {
+								"description": "together"
+							}	
+						}		
+					]
+				}
+				
+			}
+		}
+	}
+}'
+echo
+
+echo "###############"
 echo "Query Terms Group on tags"
 echo "###############"
 curl $ES_HOST':9200/get-together/_search' -d '{
